@@ -16,9 +16,19 @@ app.use(express.static(path.join(__dirname, "/views")));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
-/*CUANDO HABRAN LA RUTA */
 io.on("connection", (socket) => {
-  console.log(socket.id);
+  // CUANTOS CLIENTES TENGO
+  console.log("Clientes conectados: ", socket.engine.clientsCount);
+
+  // CUANDO EL CLIENTE SE DESCONECTA
+  socket.on("disconnect", () => {
+    console.log("El socket se ha desconactado");
+  });
+
+  // DETECTA CADA VEZ QUE PASAMOS DE HTTP LONG-POLLING A SOCKETIO
+  socket.conn.once("upgrade", () => {
+    console.log("HTTP long-Polling a: ", socket.conn.transport.name);
+  });
 });
 
 /* PORT */
