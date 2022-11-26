@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>¡Servidor con Express y Socket.io!</title>
   </head>
   <body>
-    <h1>HELLO</h1>
-    <!-- 
-        PARA QUE UN ARCHIVO HTML SE PUEDA CONECTAR A UN SERVIDOR DE SOCKET.IO
-    TENEMOS QUE PORTAR LA LIBRERIA DE SOCKET.IO  
--->
+    <h1>Funciona UwU</h1>
+
+    <p id="text"></p>
+
+    <button id="emit-to-server">Presioname 👀</button>
+
     <script src="/socket.io/socket.io.js"></script>
-    <!-- PODEMOS CREAR UN ARCHIVO APARTE DONDE VA A IR TODA LA LOGICA -->
-    <script src="/js/index.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>
