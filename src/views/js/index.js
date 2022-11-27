@@ -1,27 +1,37 @@
 const socket = io();
 
-socket.on("welcome", (data) => {
-  const text = document.querySelector("#text");
-  text.textContent = data;
+const circle = document.querySelector("#circle");
+
+//FUNCION QUE MUEVE EL CIRCULO
+const drawCircle = (position) => {
+  circle.style.top = position.top;
+  circle.style.left = position.left;
+};
+
+//FUNCION QUE OBTIENE LA POSICIÓN DEL MOUSE,
+// EJECUTA LA FUNCION DE MOVER EL CIRCULO Y LO ENVIA AL SOCKET
+const drag = (e) => {
+  const position = {
+    top: e.clientY + "px",
+    left: e.clientX + "px",
+  };
+
+  drawCircle(position);
+  socket.emit("circle position", position);
+};
+
+//'MOUSEDOWN' CUANDO DEJO PRESIONADO EL CLICK
+document.addEventListener("mousedown", (e) => {
+  //'MOUSEMOVE CUANDO SE MUEVE EL MOUSE'
+  document.addEventListener("mousemove", drag);
 });
 
-const emitToServer = document.querySelector("#emit-to-server");
-emitToServer.addEventListener("click", () => {
-  socket.emit("server", "Hola, servidor 👀");
+//CUANDO DEJO DE PRESIONAR EL CLICK
+document.addEventListener("mouseup", (e) => {
+  //REMUEVO LA FUNCIÓN
+  document.removeEventListener("mousemove", drag);
 });
-
-socket.on("everyone", (message) => {
-  console.log(message);
-});
-//VARIABLE
-const emitToLast = document.querySelector("#emit-to-last");
-
-//MENSAJE QUE SE LE VA A ENVIAR AL BACK
-emitToLast.addEventListener("click", () => {
-  socket.emit("last", "Hola 😄");
-});
-
-//MENSAJE QUE VA A RECIBIR EL ULTIMO SOCKET CONECTADO
-socket.on("salute", (message) => {
-  console.log(message);
+//ESTA SOLO SE VA A ENVIAR A OTROS USUARIOS
+socket.on("move circle", (position) => {
+  drawCircle(position);
 });
