@@ -15,8 +15,6 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   socket.on("circle position", (position) => {
-    //ESTE METODO SOLO ENVIA LA INFORMACION A OTROS USUARIOS EXEPTO AL QUE LA
-    //ESTA EJECUTANDO
     socket.broadcast.emit("move circle", position);
   });
 });
