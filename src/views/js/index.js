@@ -29,3 +29,23 @@ socketNamespace.on("connect", () => {
   //ESCRIBIMOS EN EL HTML
   namespace.textContent = group;
 });
+
+//ENVIAR MENSAJE
+const sendMessage = document.querySelector("#sendMessage");
+sendMessage.addEventListener("click", () => {
+  const message = prompt("Escribe tu mensaje: ");
+
+  socketNamespace.emit("send message", {
+    message,
+    user,
+  });
+});
+
+//RECIBIR EL MENSAJE
+socketNamespace.on("message", (messageData) => {
+  const { user, message } = messageData;
+
+  const li = document.createElement("li");
+  li.textContent = `${user} : ${message}`;
+  chat.append(li);
+});
