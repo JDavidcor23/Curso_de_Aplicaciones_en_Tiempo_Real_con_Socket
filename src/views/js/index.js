@@ -14,7 +14,6 @@ const drag = (e) => {
   };
 
   drawCircle(position);
-  //SI NO HAY CONECCIÓN EL EVENTO NO SE VA A ENVIAR
   socket.volatile.emit("circle position", position);
 };
 
