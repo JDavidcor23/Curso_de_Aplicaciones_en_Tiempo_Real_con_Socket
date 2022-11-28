@@ -1,37 +1,42 @@
 const socket = io();
 
-const circle = document.querySelector("#circle");
+// Selecciono mis 3 botones que me permitirán conectarme a las salas
+const connectRoom1 = document.querySelector("#connectRoom1");
+const connectRoom2 = document.querySelector("#connectRoom2");
+const connectRoom3 = document.querySelector("#connectRoom3");
 
-//FUNCION QUE MUEVE EL CIRCULO
-const drawCircle = (position) => {
-  circle.style.top = position.top;
-  circle.style.left = position.left;
-};
+// Eventos para que al hacer click me conecte a las salas
 
-//FUNCION QUE OBTIENE LA POSICIÓN DEL MOUSE,
-// EJECUTA LA FUNCION DE MOVER EL CIRCULO Y LO ENVIA AL SOCKET
-const drag = (e) => {
-  const position = {
-    top: e.clientY + "px",
-    left: e.clientX + "px",
-  };
-
-  drawCircle(position);
-  socket.emit("circle position", position);
-};
-
-//'MOUSEDOWN' CUANDO DEJO PRESIONADO EL CLICK
-document.addEventListener("mousedown", (e) => {
-  //'MOUSEMOVE CUANDO SE MUEVE EL MOUSE'
-  document.addEventListener("mousemove", drag);
+connectRoom1.addEventListener("click", () => {
+  socket.emit("connect to room", "room1");
 });
 
-//CUANDO DEJO DE PRESIONAR EL CLICK
-document.addEventListener("mouseup", (e) => {
-  //REMUEVO LA FUNCIÓN
-  document.removeEventListener("mousemove", drag);
+connectRoom2.addEventListener("click", () => {
+  socket.emit("connect to room", "room2");
 });
-//ESTA SOLO SE VA A ENVIAR A OTROS USUARIOS
-socket.on("move circle", (position) => {
-  drawCircle(position);
+
+connectRoom3.addEventListener("click", () => {
+  socket.emit("connect to room", "room3");
+});
+
+// Enviar mensaje
+
+const sendMessage = document.querySelector("#sendMessage");
+
+sendMessage.addEventListener("click", () => {
+  const message = prompt("Escribe tu mensaje:");
+
+  socket.emit("message", message);
+});
+
+// Recibir el evento del mensaje DEL BACK
+
+socket.on("send message", (data) => {
+  const { room } = data;
+  const { message } = data;
+
+  const li = document.createElement("li");
+  li.textContent = message;
+
+  document.querySelector(`#${room}`).append(li);
 });
