@@ -4,8 +4,15 @@ const path = require("path");
 
 const views = path.join(__dirname, "/../views");
 
-router.get("/", (req, res) => {
+const isLoggedIn = require("../middlewares/isLoggedIn");
+
+//MIDDLEWARE NORMAL
+router.get("/", isLoggedIn, (req, res) => {
   res.sendFile(views + "/index.html");
+});
+
+router.get("/register", (req, res) => {
+  res.sendFile(views + "/register.html");
 });
 
 module.exports = router;
